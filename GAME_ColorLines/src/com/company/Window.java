@@ -45,22 +45,30 @@ public boolean Check_massive(int cell, ArrayList<Integer> the_Way)
     for(int i = 0; i<the_Way.size(); ++i)
     {
         if(the_Way.get(i) == cell) flag = false;
-
     }
     return flag;
 }
+public void print_Massive(ArrayList<Integer> k)
+{
+    for(int i = 0;i<k.size();++i)
+    {
+        System.out.println(k.get(i) + "\n");
+    }
+}
+
 public boolean Check_Way(int start, int finish)
 {
     ArrayList<Integer> the_Way = new ArrayList<>();
 
-    int flag = 0, now_cell = start, next_cell, back_way = 0;
+    int flag = 0, now_cell = start, next_cell=0, back_way = 0;
     the_Way.add(start);
     while(flag == 0)
     {
         next_cell = now_cell - panelAmount;
         if((next_cell >= 0) && (nullCell.get(next_cell) != -1) && Check_massive(next_cell, the_Way))
         {
-            System.out.println("llll");
+           if(now_cell == finish) return true;
+            System.out.println("up");
             now_cell = next_cell;
             the_Way.add(now_cell);
             back_way = 0;
@@ -68,8 +76,10 @@ public boolean Check_Way(int start, int finish)
         else
         {
             next_cell = now_cell + 1;
-            if((next_cell < panelAmount*panelAmount) && (nullCell.get(next_cell) != -1) && Check_massive(next_cell, the_Way))
+            if((next_cell < panelAmount*panelAmount) && (nullCell.get(next_cell) != -1) && Check_massive(next_cell, the_Way)&&(now_cell%9!=8))
             {
+                if(now_cell == finish) return true;
+                System.out.println("right");
                 now_cell = next_cell;
                 the_Way.add(now_cell);
                 back_way = 0;
@@ -79,6 +89,8 @@ public boolean Check_Way(int start, int finish)
                 next_cell = now_cell + panelAmount;
                 if((next_cell < panelAmount*panelAmount) && (nullCell.get(next_cell) != -1) && Check_massive(next_cell, the_Way))
                 {
+                    if(now_cell == finish) return true;
+                    System.out.println("down");
                     now_cell = next_cell;
                     the_Way.add(now_cell);
                     back_way = 0;
@@ -86,8 +98,10 @@ public boolean Check_Way(int start, int finish)
                 else
                 {
                     next_cell = now_cell - 1;
-                    if((next_cell >= 0) && (nullCell.get(next_cell) != -1) && Check_massive(next_cell, the_Way))
+                    if((next_cell >= 0) && (nullCell.get(next_cell) != -1) && Check_massive(next_cell, the_Way)&&(now_cell%9!=0))
                     {
+                        if(now_cell == finish) return true;
+                        System.out.println("left");
                         now_cell = next_cell;
                         the_Way.add(now_cell);
                         back_way = 0;
@@ -96,12 +110,15 @@ public boolean Check_Way(int start, int finish)
                     {
                         if(now_cell == start)
                         {
+
                            flag = 1;
                             System.out.println("kkkk");
+                            return false;
                         }
                         else
                         {
-                            now_cell = the_Way.get(the_Way.size()-1 - back_way);
+                            if(now_cell == finish) return true;
+                            now_cell = the_Way.get(the_Way.size() - 1 - back_way);
                             back_way++;
                         }
                     }
@@ -109,8 +126,7 @@ public boolean Check_Way(int start, int finish)
             }
         }
     }
-    if(Check_massive(finish,the_Way)) return false;
-    else return true;
+ return false;
 }
 
 
@@ -193,7 +209,7 @@ for(int i=0;i<panelAmount*panelAmount;i++)
                     startPanels(3);                //setImageCell(position,massiveImage[selectCell]);
                     selectCell = -1;
                     checkImage = 1;
-                    //checkingTheLine(position,0);
+                    //checkingTheLine(position,0)return false;;
                     //addBallsPaths(3);
                     setVisible(true);
                 }
@@ -435,7 +451,7 @@ deleteBall.trimToSize();
 
         for (int i = 0; i < pathCount; i++) {
             Random random = new Random();
-            paths[i] = "D:\\sasha\\codes\\GAME_ColorLines\\src\\Images\\" + colors[random.nextInt(pathCount)];
+            paths[i] = "C:\\work\\Git_Projects\\ColorLines\\GAME_ColorLines\\src\\Images\\" + colors[random.nextInt(pathCount)];
         }
 
     }
