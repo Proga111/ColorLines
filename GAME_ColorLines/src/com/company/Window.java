@@ -414,10 +414,12 @@ deleteBall.trimToSize();
                         newLabel.setIcon(new ImageIcon(paths[counterBalls]));
                         massiveImage[i * panelAmount + j] = paths[counterBalls];
                         counterBalls++;
+
                     }
                 }
                     newPanel.add(newLabel);
                     gamePanel.add(newPanel);
+
 
             }
         }
@@ -427,7 +429,8 @@ deleteBall.trimToSize();
             ball1.setIcon(CellState(paths[0]));
             ball2.setIcon(CellState(paths[1]));
             ball3.setIcon(CellState(paths[2]));
-
+            for (int i = 0;i<massive.length;++i)
+                checkingTheLine(massive[i]);
     }
 
     void addBallsPaths() {
@@ -435,7 +438,7 @@ deleteBall.trimToSize();
 
         for (int i = 0; i < pathCount; i++) {
             Random random = new Random();
-            paths[i] = "C:\\work\\GitProjects\\ColorLines\\GAME_ColorLines\\src\\Images\\" + colors[random.nextInt(pathCount)];
+            paths[i] = "C:\\work\\Git_Projects\\ColorLines\\GAME_ColorLines\\src\\Images\\" + colors[random.nextInt(pathCount)];
         }
 
     }
