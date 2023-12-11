@@ -198,9 +198,15 @@ for(int i=0;i<panelAmount*panelAmount;i++)
                     startPanels(3);                //setImageCell(position,massiveImage[selectCell]);
                     selectCell = -1;
                     checkImage = 1;
+                    for (int l = 0;l<panelAmount*panelAmount;++l) {
+                        checkingTheLine(l);
+                        System.out.println(l + "ttttttt\n");
+                    }
+                    startPanels(0);
                     //checkingTheLine(position,0)return false;;
                     //addBallsPaths(3);
                     setVisible(true);
+
                 }
                 else System.out.println("Не получилось((");
 
@@ -223,7 +229,7 @@ for(int i=0;i<panelAmount*panelAmount;i++)
 
 
     public void  checkingTheLine(int position) {
-        System.out.println("ChekingLine");
+        System.out.println("ChekingLine" + position);
         deleteBall.add(position);
         int coastRoad12 = 0, coastRoad34 = 0, coastRoad56 = 0, coastRoad78 = 0, positionBalls, bestCoast = 0, positionStart = 0,chekroad=0;
         positionStart = position;
@@ -407,8 +413,7 @@ deleteBall.trimToSize();
                     newLabel.addMouseListener(new Window.ButtonMouseListener(j + i * panelAmount));
                     newPanel.setLayout(new BorderLayout());
                 if(massiveImage[j + i * panelAmount].equals("0")==false) {
-                        newLabel.setIcon(new ImageIcon(massiveImage[j + i * panelAmount]));
-                    }
+                        newLabel.setIcon(new ImageIcon(massiveImage[j + i * panelAmount]));}
                 else{
                     for (int k = 0; k < numberBalls; k++) {
                         if (massive[k]== (j + i * panelAmount) )proverka = 1;
@@ -419,14 +424,24 @@ deleteBall.trimToSize();
 
                     }
                     if (proverka == 1 && numberBalls == 3) {
+
+
+
                         newLabel.setIcon(new ImageIcon(paths[counterBalls]));
                         massiveImage[i * panelAmount + j] = paths[counterBalls];
+
                         counterBalls++;
 
+
                     }
-                }
+
+                    }
+
+
+
                     newPanel.add(newLabel);
                     gamePanel.add(newPanel);
+
 
 
             }
@@ -437,8 +452,10 @@ deleteBall.trimToSize();
             ball1.setIcon(CellState(paths[0]));
             ball2.setIcon(CellState(paths[1]));
             ball3.setIcon(CellState(paths[2]));
-            for (int i = 0;i<massive.length;++i)
-                checkingTheLine(massive[i]);
+        for (int l = 0;l<massive.length;++l) {
+            checkingTheLine(massive[l]);
+            System.out.println(massive[l] + "ttttttt\n");
+        }
     }
 
     void addBallsPaths() {
