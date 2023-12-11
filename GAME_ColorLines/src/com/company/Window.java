@@ -225,7 +225,7 @@ for(int i=0;i<panelAmount*panelAmount;i++)
     public void  checkingTheLine(int position) {
         System.out.println("ChekingLine");
         deleteBall.add(position);
-        int coastRoad12 = 0, coastRoad34 = 0, coastRoad56 = 0, coastRoad78 = 0, positionBalls, bestCoast = 0, positionStart = 0;
+        int coastRoad12 = 0, coastRoad34 = 0, coastRoad56 = 0, coastRoad78 = 0, positionBalls, bestCoast = 0, positionStart = 0,chekroad=0;
         positionStart = position;
             while (position >= panelAmount) {
                 if(massiveImage[position - panelAmount].equals(massiveImage[position])==true&&massiveImage[position - panelAmount].equals("0")==false){
@@ -247,10 +247,10 @@ for(int i=0;i<panelAmount*panelAmount;i++)
                 else break;
             }
         if (coastRoad12 >= 4) {
-            deleteBall.add(positionStart);
+            chekroad++;
             bestCoast+=(coastRoad12+1)*2+(coastRoad12-4)*3;
             for (int i = 0; i < deleteBall.size(); ++i) {
-                massiveImage[deleteBall.get(i)] = "0";
+                if(deleteBall.get(i) !=positionStart)massiveImage[deleteBall.get(i)] = "0";
                 nullCell.set(deleteBall.get(i),deleteBall.get(i));
                // deleteBall.remove(i);
             }
@@ -258,6 +258,7 @@ for(int i=0;i<panelAmount*panelAmount;i++)
         }
         deleteBall.clear();
 deleteBall.trimToSize();
+        position=positionStart;
         while ((position+1)%panelAmount!=0) {
             if(massiveImage[position +1].equals(massiveImage[position])==true&&massiveImage[position + 1].equals("0")==false){
                 coastRoad34++;
@@ -269,6 +270,9 @@ deleteBall.trimToSize();
         }
         position=positionStart;
         while (position%panelAmount!=0) {
+            if(massiveImage[position -1].equals(massiveImage[position])==true)System.out.println("1))");
+            System.out.println("POSITION = "+massiveImage[position]);
+            if(massiveImage[position - 1].equals("0")==false)System.out.println("2))");
             if(massiveImage[position -1].equals(massiveImage[position])==true&&massiveImage[position - 1].equals("0")==false) {
                 coastRoad34++;
                 deleteBall.add(position -1);
@@ -278,7 +282,7 @@ deleteBall.trimToSize();
             else break;
         }
         if (coastRoad34 >= 4) {
-            deleteBall.add(positionStart);
+            chekroad++;
             bestCoast+=(coastRoad34+1)*2+(coastRoad34-4)*3;
             for (int i = 0; i < deleteBall.size(); ++i) {
                 massiveImage[deleteBall.get(i)] = "0";
@@ -288,6 +292,7 @@ deleteBall.trimToSize();
         }
         deleteBall.clear();
         deleteBall.trimToSize();
+        position=positionStart;
         while (position-panelAmount+1>0&&(position+1)%panelAmount!=0) {
             if(massiveImage[position+1-panelAmount].equals(massiveImage[position])==true&&massiveImage[position +1- panelAmount].equals("0")==false){
                 coastRoad56++;
@@ -308,7 +313,7 @@ deleteBall.trimToSize();
             else break;
         }
         if (coastRoad56 >= 4) {
-            deleteBall.add(positionStart);
+            chekroad++;
             bestCoast+=(coastRoad56+1)*2+(coastRoad56-4)*3;
             for (int i = 0; i < deleteBall.size(); ++i) {
                 massiveImage[deleteBall.get(i)] = "0";
@@ -319,7 +324,7 @@ deleteBall.trimToSize();
         }
         deleteBall.clear();
         deleteBall.trimToSize();
-
+        position=positionStart;
         while (position-panelAmount-1>0&&(position)%panelAmount!=0) {
             if(massiveImage[position-panelAmount-1].equals(massiveImage[position])==true&&massiveImage[position -1- panelAmount].equals("0")==false){
                 coastRoad78++;
@@ -340,7 +345,7 @@ deleteBall.trimToSize();
             else break;
         }
         if (coastRoad78 >= 4) {
-            deleteBall.add(positionStart);
+            chekroad++;
             bestCoast+=(coastRoad78+1)*2+(coastRoad78-4)*3;
             for (int i = 0; i < deleteBall.size(); ++i) {
                 massiveImage[deleteBall.get(i)] = "0";
@@ -352,6 +357,9 @@ deleteBall.trimToSize();
         deleteBall.trimToSize();
         if(bestCoast>9)
         {
+            if(chekroad>1)bestCoast=bestCoast-2*(chekroad-1);
+            massiveImage[positionStart] = "0";
+            nullCell.set(positionStart,positionStart);
             score+=bestCoast;
             System.out.println("SCORE = "+bestCoast);
         }
