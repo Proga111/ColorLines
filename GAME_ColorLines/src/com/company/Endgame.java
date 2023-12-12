@@ -13,7 +13,6 @@ public class Endgame extends JDialog {
 
     public Endgame(JFrame f) {
         super(f);
-        ((Window)getOwner()).
         //this(owner, false);
         setContentPane(contentPane);
         setModal(true);

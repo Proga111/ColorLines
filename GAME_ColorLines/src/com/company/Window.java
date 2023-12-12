@@ -193,6 +193,10 @@ for(int i=0;i<panelAmount*panelAmount;i++)
             {
                 restart();
             }
+            if(position == -3)
+            {
+                dispose();
+            }
              else if(selectCell!=-1 && massiveImage[position].equals("0")==true)
             {
                 if(Check_Way(selectCell,position)) {
@@ -385,6 +389,7 @@ deleteBall.trimToSize();
         new Endgame(this);
     }
 
+
     public void startPanels( int numberBalls){
         int proverka=0,counterBalls=0,chek=0, notEmpty=0;
         int[] massive = new int[numberBalls];
@@ -402,6 +407,7 @@ deleteBall.trimToSize();
         }
         gamePanel.removeAll();
         restartButton.addMouseListener(new Window.ButtonMouseListener(-2));
+        exitButton .addMouseListener(new Window.ButtonMouseListener(-3));
 
             for (int i = 0; i < numberBalls; i++) {
                 massive[i] = random.nextInt(nullCell.size());
