@@ -25,6 +25,8 @@ public class Window extends JFrame {
     private JLabel scoreLabel;
     private JPanel downPanel;
     private JLabel numberLabel;
+    private JPanel finalPanel;
+    private JLabel FinalLabel;
     private final int panelAmount = 9;
     private final int panelSize = 50;
 
@@ -34,11 +36,16 @@ public class Window extends JFrame {
 
     private String[] paths = new String[pathCount];
 
-    int selectCell = -1, checkImage = 0,score=0;
+    int selectCell = -1, checkImage = 0;
+    int score;
     String scoreWindow="0";
 
     private String[] massiveImage = new String[panelAmount * panelAmount];
 private ImageIcon mini;
+public int getScore()
+{
+    return score;
+}
 public boolean Check_massive(int cell, ArrayList<Integer> the_Way)
 {
     boolean flag  = true;
@@ -145,6 +152,29 @@ for(int i=0;i<panelAmount*panelAmount;i++)
         nullCell.add(i);
     }
 }
+
+    public void restart() {
+        addBallsPaths();
+        createNullMassiveImage();
+        scoreWindow="0";
+        score=0;
+        numberLabel.setText(scoreWindow);
+        for(int i=0;i<panelAmount*panelAmount;++i)
+        {
+            massiveImage[i]="0";
+        }
+        gamePanel.removeAll();
+
+        for(int i=0;i<panelAmount*panelAmount;i++)
+        {
+            nullCell.set(i,i);
+        }
+        startPanels(5);
+        setVisible(true);
+
+        System.out.println("hhhhhhhhhhhhhhhhhh");
+    }
+
     private class ButtonMouseListener extends MouseAdapter{
 
         private int position;
@@ -161,28 +191,7 @@ for(int i=0;i<panelAmount*panelAmount;i++)
             checkImage=0;
             if(position==-2)
             {
-                addBallsPaths();
-                createNullMassiveImage();
-                scoreWindow="0";
-                score=0;
-                numberLabel.setText(scoreWindow);
-                for(int i=0;i<panelAmount*panelAmount;++i)
-                {
-                    massiveImage[i]="0";
-                }
-                gamePanel.removeAll();
-
-                for(int i=0;i<panelAmount*panelAmount;i++)
-                {
-                    nullCell.set(i,i);
-                }
-                startPanels(5);
-
-
-               setVisible(true);
-
-                System.out.println("hhhhhhhhhhhhhhhhhh");
-
+                restart();
             }
              else if(selectCell!=-1 && massiveImage[position].equals("0")==true)
             {
@@ -370,13 +379,27 @@ deleteBall.trimToSize();
             System.out.println("SCORE = "+bestCoast);
         }
     }
-
+    public void setFinalLabel()
+    {
+        FinalLabel.setText("Game over. Score = " + score);
+        new Endgame(this);
+    }
 
     public void startPanels( int numberBalls){
-        int proverka=0,counterBalls=0,chek=0;
+        int proverka=0,counterBalls=0,chek=0, notEmpty=0;
         int[] massive = new int[numberBalls];
         Random random = new Random();
-
+        for(int y= 0;y<panelAmount*panelAmount;++y)
+        {
+            if(nullCell.get(y) != -1)
+            {
+                notEmpty++;
+            }
+        }
+        if(notEmpty < 4)
+        {
+            setFinalLabel();
+        }
         gamePanel.removeAll();
         restartButton.addMouseListener(new Window.ButtonMouseListener(-2));
 
@@ -458,7 +481,7 @@ deleteBall.trimToSize();
         }
     }
 
-    void addBallsPaths() {
+    public void addBallsPaths() {
         String[] colors = new String[]{"blue.png", "cyan.png","dkred.png","green.png","magenta.png","red.png","yellow.png"};
 
         for (int i = 0; i < pathCount; i++) {
@@ -474,7 +497,6 @@ deleteBall.trimToSize();
         return mini;
     }
 
-
     public Window()
     {
         addBallsPaths();
@@ -484,7 +506,6 @@ deleteBall.trimToSize();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setContentPane(mainPanel);
         gamePanel.setLayout(new GridLayout(panelAmount, panelAmount));
-
 
         setResizable(false);
 
