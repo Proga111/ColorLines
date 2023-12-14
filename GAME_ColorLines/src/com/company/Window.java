@@ -221,7 +221,7 @@ for(int i=0;i<panelAmount*panelAmount;i++)
                     setVisible(true);
 
                 }
-                else System.out.println("Не получилось((");
+                else System.out.println("Не получилось((((((");
 
             }
 
