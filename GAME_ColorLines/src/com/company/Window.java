@@ -492,7 +492,7 @@ deleteBall.trimToSize();
 
         for (int i = 0; i < pathCount; i++) {
             Random random = new Random();
-            paths[i] = "C:\\work\\Git_Projects\\ColorLines\\GAME_ColorLines\\src\\Images\\" + colors[random.nextInt(pathCount)];
+            paths[i] = "GAME_ColorLines\\src\\Images\\" + colors[random.nextInt(pathCount)];
         }
 
     }
