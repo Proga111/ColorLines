@@ -4,12 +4,15 @@ import org.w3c.dom.ls.LSOutput;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.*;
 import java.util.Random;
 import java.util.ArrayList;
+import java.awt.event.*;
+
 
 
 public class Window extends JFrame {
@@ -33,7 +36,7 @@ public class Window extends JFrame {
     private final int pathCount = 7;
     private ArrayList<Integer> nullCell = new ArrayList<>();
     private ArrayList<Integer> deleteBall = new ArrayList<>();
-
+    //private ActionListener textListener = new ButtonRestart();
     private String[] paths = new String[pathCount];
 
     int selectCell = -1, checkImage = 0;
@@ -54,13 +57,6 @@ public boolean Check_massive(int cell, ArrayList<Integer> the_Way)
         if(the_Way.get(i) == cell) flag = false;
     }
     return flag;
-}
-public void print_Massive(ArrayList<Integer> k)
-{
-    for(int i = 0;i<k.size();++i)
-    {
-        System.out.println(k.get(i) + "\n");
-    }
 }
 
 public boolean Check_Way(int start, int finish)
@@ -172,8 +168,9 @@ for(int i=0;i<panelAmount*panelAmount;i++)
         startPanels(5);
         setVisible(true);
 
-        System.out.println("hhhhhhhhhhhhhhhhhh");
     }
+
+
 
     private class ButtonMouseListener extends MouseAdapter{
 
@@ -189,15 +186,7 @@ for(int i=0;i<panelAmount*panelAmount;i++)
             super.mousePressed(e);
             System.out.println(position);
             checkImage=0;
-            if(position==-2)
-            {
-                restart();
-            }
-            if(position == -3)
-            {
-                dispose();
-            }
-             else if(position>-1 && selectCell!=-1 && massiveImage[position].equals("0")==true)
+            if(position>-1 && selectCell!=-1 && massiveImage[position].equals("0")==true)
             {
                 if(Check_Way(selectCell,position)) {
                     massiveImage[position] = massiveImage[selectCell];
@@ -208,16 +197,13 @@ for(int i=0;i<panelAmount*panelAmount;i++)
                     checkingTheLine(position);
                     scoreWindow = Integer.toString(score);
                     numberLabel.setText(scoreWindow);
-                    startPanels(3);                //setImageCell(position,massiveImage[selectCell]);
+                    startPanels(3);
                     selectCell = -1;
                     checkImage = 1;
                     for (int l = 0;l<panelAmount*panelAmount;++l) {
                         checkingTheLine(l);
-                        System.out.println(l + "ttttttt\n");
                     }
                     startPanels(0);
-                    //checkingTheLine(position,0)return false;;
-                    //addBallsPaths(3);
                     setVisible(true);
 
                 }
@@ -267,7 +253,7 @@ for(int i=0;i<panelAmount*panelAmount;i++)
             }
         if (coastRoad12 >= 4) {
             chekroad++;
-            bestCoast+=(coastRoad12+1)*2+(coastRoad12-4)*3;
+            bestCoast+=10+(coastRoad12-4)*3;
             for (int i = 0; i < deleteBall.size(); ++i) {
                 if(deleteBall.get(i) !=positionStart)massiveImage[deleteBall.get(i)] = "0";
                 nullCell.set(deleteBall.get(i),deleteBall.get(i));
@@ -302,7 +288,7 @@ deleteBall.trimToSize();
         }
         if (coastRoad34 >= 4) {
             chekroad++;
-            bestCoast+=(coastRoad34+1)*2+(coastRoad34-4)*3;
+            bestCoast+=10+(coastRoad34-4)*3;
             for (int i = 0; i < deleteBall.size(); ++i) {
                 massiveImage[deleteBall.get(i)] = "0";
                 System.out.println("delete = "+deleteBall.get(i));
@@ -333,7 +319,7 @@ deleteBall.trimToSize();
         }
         if (coastRoad56 >= 4) {
             chekroad++;
-            bestCoast+=(coastRoad56+1)*2+(coastRoad56-4)*3;
+            bestCoast+=10+(coastRoad56-4)*3;
             for (int i = 0; i < deleteBall.size(); ++i) {
                 massiveImage[deleteBall.get(i)] = "0";
                 System.out.println("delete = "+deleteBall.get(i));
@@ -365,7 +351,7 @@ deleteBall.trimToSize();
         }
         if (coastRoad78 >= 4) {
             chekroad++;
-            bestCoast+=(coastRoad78+1)*2+(coastRoad78-4)*3;
+            bestCoast+=10*2+(coastRoad78-4)*3;
             for (int i = 0; i < deleteBall.size(); ++i) {
                 massiveImage[deleteBall.get(i)] = "0";
                 System.out.println("delete = "+deleteBall.get(i));
@@ -406,26 +392,29 @@ deleteBall.trimToSize();
             setFinalLabel();
         }
         gamePanel.removeAll();
-        restartButton.addMouseListener(new Window.ButtonMouseListener(-2));
-        exitButton .addMouseListener(new Window.ButtonMouseListener(-3));
-
+        //restartButton.addActionListener(new Window.ButtonMouseListener(-2));
+        //exitButton .addActionListener(new Window.ButtonMouseListener(-3));
+        exitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+        restartButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                restart();
+            }
+        });
             for (int i = 0; i < numberBalls; i++) {
                 massive[i] = random.nextInt(nullCell.size());
 
                 if(nullCell.get(massive[i])==-1) {
                     while (nullCell.get(massive[i]) == -1) {
                         massive[i] = random.nextInt(nullCell.size());
-                        //System.out.println("--------------------");
                     }
                 }
                 nullCell.set(massive[i] , -1);
 
                 System.out.println("posotion  = "+massive[i]);
-//                for( int j=0;j<nullCell.size();j++)
-//                {
-//                    System.out.println("["+j+"] = "+nullCell.get(j));
-//                }
-
             }
 
 
@@ -450,34 +439,19 @@ deleteBall.trimToSize();
                     if (proverka == 1 && numberBalls == 5) {
                         newLabel.setIcon(new ImageIcon(paths[(j + i * panelAmount) % pathCount]));
                         massiveImage[i * panelAmount + j] = paths[(j + i * panelAmount) % pathCount];
-
                     }
                     if (proverka == 1 && numberBalls == 3) {
-
-
-
                         newLabel.setIcon(new ImageIcon(paths[counterBalls]));
                         massiveImage[i * panelAmount + j] = paths[counterBalls];
-
                         counterBalls++;
-
-
                     }
-
                     }
-
-
-
                     newPanel.add(newLabel);
                     gamePanel.add(newPanel);
-
-
-
             }
         }
         addBallsPaths();
         counterBalls=0;
-
             ball1.setIcon(CellState(paths[0]));
             ball2.setIcon(CellState(paths[1]));
             ball3.setIcon(CellState(paths[2]));
