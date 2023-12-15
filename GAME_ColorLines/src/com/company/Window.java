@@ -197,7 +197,7 @@ for(int i=0;i<panelAmount*panelAmount;i++)
             {
                 dispose();
             }
-             else if(selectCell!=-1 && massiveImage[position].equals("0")==true)
+             else if(position>-1 && selectCell!=-1 && massiveImage[position].equals("0")==true)
             {
                 if(Check_Way(selectCell,position)) {
                     massiveImage[position] = massiveImage[selectCell];
@@ -225,7 +225,7 @@ for(int i=0;i<panelAmount*panelAmount;i++)
 
             }
 
-           if(massiveImage[position].equals("0")==true) {
+           if(position> -1 && massiveImage[position].equals("0")==true) {
                checkImage = 1;
                selectCell=-1;
            }
