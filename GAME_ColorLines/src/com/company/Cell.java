@@ -11,8 +11,13 @@ import java.util.Random;
 
 
 public class Cell {
+    private ColorName colorBall;
 
-//    public boolean containsImage() {
-//        return this.getIcon() != null;
-//    }
+    public ColorName getColor() {
+        return colorBall;
+    }
+
+    public void setDayOfWeek(ColorName color) {
+        this.colorBall = color;
+    }
 }
