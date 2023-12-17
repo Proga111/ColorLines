@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.*;
+import java.util.EmptyStackException;
 import java.util.Random;
 import java.util.ArrayList;
 import java.awt.event.*;
@@ -45,24 +46,17 @@ public class Window extends JFrame {
     int score;
     String scoreWindow = "0";
 
-    private String[] massiveImage = new String[panelAmount * panelAmount];
+    public ColorName[] massiveImage = new ColorName[panelAmount * panelAmount];
     private ImageIcon mini;
 
 
-//    ImageIcon blue = new ImageIcon("GAME_ColorLines\\src\\Images\\blue.png");
-//    Image imageBlue = blue.getImage();
-//    ImageIcon cyan = new ImageIcon("GAME_ColorLines\\src\\Images\\blue.png");
-//    Image imageCyan = cyan.getImage();
-//    ImageIcon dkred = new ImageIcon("GAME_ColorLines\\src\\Images\\blue.png");
-//    Image imageDkred = dkred.getImage();
-//    ImageIcon green = new ImageIcon("GAME_ColorLines\\src\\Images\\blue.png");
-//    Image imageGreen = green.getImage();
-//    ImageIcon magenta = new ImageIcon("GAME_ColorLines\\src\\Images\\blue.png");
-//    Image imageMagenta = magenta.getImage();
-//    ImageIcon red = new ImageIcon("GAME_ColorLines\\src\\Images\\blue.png");
-//    Image imageRed = red.getImage();
-//    ImageIcon yellow = new ImageIcon("GAME_ColorLines\\src\\Images\\blue.png");
-//    Image imageYellow = yellow.getImage();
+    ImageIcon blue = new ImageIcon("GAME_ColorLines\\src\\Images\\blue.png");
+    ImageIcon cyan = new ImageIcon("GAME_ColorLines\\src\\Images\\cyan.png");
+    ImageIcon dkred = new ImageIcon("GAME_ColorLines\\src\\Images\\dkred.png");
+    ImageIcon green = new ImageIcon("GAME_ColorLines\\src\\Images\\green.png");
+    ImageIcon magenta = new ImageIcon("GAME_ColorLines\\src\\Images\\magenta.png");
+    ImageIcon red = new ImageIcon("GAME_ColorLines\\src\\Images\\red.png");
+    ImageIcon yellow = new ImageIcon("GAME_ColorLines\\src\\Images\\yellow.png");
 
 
     public int getScore() {
@@ -140,7 +134,7 @@ public class Window extends JFrame {
 
     public void createNullMassiveImage() {
         for (int i = 0; i < panelAmount * panelAmount; i++) {
-            massiveImage[i] = "0";
+            massiveImage[i] = ColorName.EMPTY;
         }
     }
 
@@ -157,7 +151,7 @@ public class Window extends JFrame {
         score = 0;
         numberLabel.setText(scoreWindow);
         for (int i = 0; i < panelAmount * panelAmount; ++i) {
-            massiveImage[i] = "0";
+            massiveImage[i] = ColorName.EMPTY;
         }
         gamePanel.removeAll();
 
@@ -184,10 +178,10 @@ public class Window extends JFrame {
             super.mousePressed(e);
             System.out.println(position);
             checkImage = 0;
-            if (position > -1 && selectCell != -1 && massiveImage[position].equals("0") == true) {
+            if (position > -1 && selectCell != -1 && massiveImage[position] == ColorName.EMPTY) {
                 if (Check_Way(selectCell, position)) {
                     massiveImage[position] = massiveImage[selectCell];
-                    massiveImage[selectCell] = "0";
+                    massiveImage[selectCell] = ColorName.EMPTY;
 
                     nullCell.set(position, -1);
                     nullCell.set(selectCell, selectCell);
@@ -207,7 +201,7 @@ public class Window extends JFrame {
 
             }
 
-            if (position > -1 && massiveImage[position].equals("0") == true) {
+            if (position > -1 && massiveImage[position] == ColorName.EMPTY) {
                 checkImage = 1;
                 selectCell = -1;
             } else if (checkImage == 0) {
@@ -228,7 +222,7 @@ public class Window extends JFrame {
         int coastRoad12 = 0, coastRoad34 = 0, coastRoad56 = 0, coastRoad78 = 0, positionBalls, bestCoast = 0, positionStart = 0, chekroad = 0;
         positionStart = position;
         while (position >= panelAmount) {
-            if (massiveImage[position - panelAmount].equals(massiveImage[position]) == true && massiveImage[position - panelAmount].equals("0") == false) {
+            if (massiveImage[position - panelAmount] == (massiveImage[position]) && massiveImage[position - panelAmount] != ColorName.EMPTY) {
                 coastRoad12++;
                 deleteBall.add(position - panelAmount);
                 position = position - panelAmount;
@@ -237,7 +231,7 @@ public class Window extends JFrame {
         }
         position = positionStart;
         while (position < panelAmount * panelAmount - panelAmount) {
-            if (massiveImage[position + panelAmount].equals(massiveImage[position]) == true && massiveImage[position + panelAmount].equals("0") == false) {
+            if (massiveImage[position + panelAmount] == (massiveImage[position]) && massiveImage[position + panelAmount] != ColorName.EMPTY) {
                 coastRoad12++;
                 deleteBall.add(position + panelAmount);
                 position = position + panelAmount;
@@ -248,7 +242,7 @@ public class Window extends JFrame {
             chekroad++;
             bestCoast += 10 + (coastRoad12 - 4) * 3;
             for (int i = 0; i < deleteBall.size(); ++i) {
-                if (deleteBall.get(i) != positionStart) massiveImage[deleteBall.get(i)] = "0";
+                if (deleteBall.get(i) != positionStart) massiveImage[deleteBall.get(i)] = ColorName.EMPTY;
                 nullCell.set(deleteBall.get(i), deleteBall.get(i));
                 // deleteBall.remove(i);
             }
@@ -258,7 +252,7 @@ public class Window extends JFrame {
         deleteBall.trimToSize();
         position = positionStart;
         while ((position + 1) % panelAmount != 0) {
-            if (massiveImage[position + 1].equals(massiveImage[position]) == true && massiveImage[position + 1].equals("0") == false) {
+            if (massiveImage[position + 1] == (massiveImage[position]) && massiveImage[position + 1]!=ColorName.EMPTY) {
                 coastRoad34++;
                 deleteBall.add(position + 1);
                 position = position + 1;
@@ -267,10 +261,10 @@ public class Window extends JFrame {
         }
         position = positionStart;
         while (position % panelAmount != 0) {
-            if (massiveImage[position - 1].equals(massiveImage[position]) == true) System.out.println("1))");
+            if (massiveImage[position - 1] == (massiveImage[position])) System.out.println("1))");
             System.out.println("POSITION = " + massiveImage[position]);
-            if (massiveImage[position - 1].equals("0") == false) System.out.println("2))");
-            if (massiveImage[position - 1].equals(massiveImage[position]) == true && massiveImage[position - 1].equals("0") == false) {
+            if (massiveImage[position - 1] != ColorName.EMPTY) System.out.println("2))");
+            if (massiveImage[position - 1] == (massiveImage[position]) && massiveImage[position - 1] != ColorName.EMPTY) {
                 coastRoad34++;
                 deleteBall.add(position - 1);
                 position = position - 1;
@@ -281,7 +275,7 @@ public class Window extends JFrame {
             chekroad++;
             bestCoast += 10 + (coastRoad34 - 4) * 3;
             for (int i = 0; i < deleteBall.size(); ++i) {
-                massiveImage[deleteBall.get(i)] = "0";
+                massiveImage[deleteBall.get(i)] = ColorName.EMPTY;
                 System.out.println("delete = " + deleteBall.get(i));
                 nullCell.set(deleteBall.get(i), deleteBall.get(i));
             }
@@ -290,7 +284,7 @@ public class Window extends JFrame {
         deleteBall.trimToSize();
         position = positionStart;
         while (position - panelAmount + 1 > 0 && (position + 1) % panelAmount != 0) {
-            if (massiveImage[position + 1 - panelAmount].equals(massiveImage[position]) == true && massiveImage[position + 1 - panelAmount].equals("0") == false) {
+            if (massiveImage[position + 1 - panelAmount] == (massiveImage[position]) && massiveImage[position + 1 - panelAmount] != ColorName.EMPTY) {
                 coastRoad56++;
                 deleteBall.add(position + 1 - panelAmount);
                 position = position + 1 - panelAmount;
@@ -299,7 +293,7 @@ public class Window extends JFrame {
         }
         position = positionStart;
         while (position + panelAmount - 1 < panelAmount * panelAmount && position % panelAmount != 0) {
-            if (massiveImage[position + panelAmount - 1].equals(massiveImage[position]) == true && massiveImage[position + panelAmount - 1].equals("0") == false) {
+            if (massiveImage[position + panelAmount - 1]==(massiveImage[position]) && massiveImage[position + panelAmount - 1] != ColorName.EMPTY) {
                 coastRoad56++;
                 deleteBall.add(position + panelAmount - 1);
                 position = position + panelAmount - 1;
@@ -310,7 +304,7 @@ public class Window extends JFrame {
             chekroad++;
             bestCoast += 10 + (coastRoad56 - 4) * 3;
             for (int i = 0; i < deleteBall.size(); ++i) {
-                massiveImage[deleteBall.get(i)] = "0";
+                massiveImage[deleteBall.get(i)] = ColorName.EMPTY;
                 System.out.println("delete = " + deleteBall.get(i));
                 nullCell.set(deleteBall.get(i), deleteBall.get(i));
 
@@ -320,7 +314,7 @@ public class Window extends JFrame {
         deleteBall.trimToSize();
         position = positionStart;
         while (position - panelAmount - 1 > 0 && (position) % panelAmount != 0) {
-            if (massiveImage[position - panelAmount - 1].equals(massiveImage[position]) == true && massiveImage[position - 1 - panelAmount].equals("0") == false) {
+            if (massiveImage[position - panelAmount - 1] == (massiveImage[position])&& massiveImage[position - 1 - panelAmount] != ColorName.EMPTY) {
                 coastRoad78++;
                 deleteBall.add(position - panelAmount - 1);
                 position = position - panelAmount - 1;
@@ -329,7 +323,7 @@ public class Window extends JFrame {
         }
         position = positionStart;
         while (position + panelAmount + 1 < panelAmount * panelAmount && (position + 1) % panelAmount != 0) {
-            if (massiveImage[position + panelAmount + 1].equals(massiveImage[position]) == true && massiveImage[position + panelAmount + 1].equals("0") == false) {
+            if (massiveImage[position + panelAmount + 1] == (massiveImage[position]) && massiveImage[position + panelAmount + 1] != ColorName.EMPTY) {
                 coastRoad78++;
                 deleteBall.add(position + panelAmount + 1);
                 position = position + panelAmount + 1;
@@ -340,7 +334,7 @@ public class Window extends JFrame {
             chekroad++;
             bestCoast += 10 * 2 + (coastRoad78 - 4) * 3;
             for (int i = 0; i < deleteBall.size(); ++i) {
-                massiveImage[deleteBall.get(i)] = "0";
+                massiveImage[deleteBall.get(i)] = ColorName.EMPTY;
                 System.out.println("delete = " + deleteBall.get(i));
                 nullCell.set(deleteBall.get(i), deleteBall.get(i));
             }
@@ -349,7 +343,7 @@ public class Window extends JFrame {
         deleteBall.trimToSize();
         if (bestCoast > 9) {
             if (chekroad > 1) bestCoast = bestCoast - 2 * (chekroad - 1);
-            massiveImage[positionStart] = "0";
+            massiveImage[positionStart] = ColorName.EMPTY;
             nullCell.set(positionStart, positionStart);
             score += bestCoast;
             System.out.println("SCORE = " + bestCoast);
@@ -413,19 +407,19 @@ public class Window extends JFrame {
                 newPanel.addMouseListener(new Window.ButtonMouseListener(j + i * panelAmount));
                 newLabel.addMouseListener(new Window.ButtonMouseListener(j + i * panelAmount));
                 newPanel.setLayout(new BorderLayout());
-                if (massiveImage[j + i * panelAmount].equals("0") == false) {
-                    newLabel.setIcon(new ImageIcon(massiveImage[j + i * panelAmount]));
+                if (massiveImage[j + i * panelAmount] != ColorName.EMPTY) {
+                    newLabel.setIcon(choiceColor(massiveImage[j + i * panelAmount]));
                 } else {
                     for (int k = 0; k < numberBalls; k++) {
                         if (massive[k] == (j + i * panelAmount)) proverka = 1;
                     }
                     if (proverka == 1 && numberBalls == 5) {
                         newLabel.setIcon(choiceColor(paths[(j + i * panelAmount) % pathCount]));
-                        massiveImage[i * panelAmount + j] = paths[(j + i * panelAmount) % pathCount].getColor();
+                        massiveImage[i * panelAmount + j] = paths[(j + i * panelAmount) % pathCount];
                     }
                     if (proverka == 1 && numberBalls == 3) {
                         newLabel.setIcon(choiceColor(paths[counterBalls]));
-                        massiveImage[i * panelAmount + j] = paths[counterBalls].getColor();
+                        massiveImage[i * panelAmount + j] = paths[counterBalls];
                         counterBalls++;
                     }
                 }
@@ -448,7 +442,7 @@ public class Window extends JFrame {
 
         for (int i = 0; i < pathCount; i++) {
             Random random = new Random();
-            paths[i] = ColorName.values()[(int) (Math.random() * (ColorName.values().length))];
+            paths[i] = ColorName.BLUE.randomGen();
         }
 
     }
@@ -463,20 +457,22 @@ public class Window extends JFrame {
     public ImageIcon choiceColor(ColorName colorBall) {
         switch (colorBall) {
             case BLUE:
-                return new ImageIcon("GAME_ColorLines\\src\\Images\\blue.png");
+                return blue;
             case CYAN:
-                return new ImageIcon("GAME_ColorLines\\src\\Images\\cyan.png");
+                return cyan;
             case GREEN:
-                return new ImageIcon("GAME_ColorLines\\src\\Images\\green.png");
+                return green;
             case MAGENTA:
-                return new ImageIcon("GAME_ColorLines\\src\\Images\\magenta.png");
+                return magenta;
             case RED:
-                return new ImageIcon("GAME_ColorLines\\src\\Images\\red.png");
+                return red;
             case YELLOW:
-                return new ImageIcon("GAME_ColorLines\\src\\Images\\yellow.png");
+                return yellow;
+            case DKRED:
+                return dkred;
 
         }
-        return new ImageIcon("GAME_ColorLines\\src\\Images\\red.png");
+        return red;
     }
 
     public Window()

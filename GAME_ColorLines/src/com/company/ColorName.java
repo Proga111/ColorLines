@@ -22,4 +22,10 @@ public enum ColorName {
     public static ColorName[] getValues() {
         return values();
     }
+    public ColorName randomGen()
+    {
+        return ColorName.values()[(int)(Math.random()*7)];
+    }
+
+
 }
