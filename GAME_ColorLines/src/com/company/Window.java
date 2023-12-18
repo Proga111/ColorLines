@@ -32,7 +32,7 @@ public class Window extends JFrame {
     private JLabel numberLabel;
     private JPanel finalPanel;
     private JLabel FinalLabel;
-    private final int panelAmount = 9;
+    private final int panelAmount = 5;
     private final int panelSize = 50;
 
     private final int pathCount = 7;
@@ -158,6 +158,7 @@ public class Window extends JFrame {
         for (int i = 0; i < panelAmount * panelAmount; i++) {
             nullCell.set(i, i);
         }
+        FinalLabel.setText("");
         startPanels(5);
         setVisible(true);
 
@@ -360,14 +361,6 @@ public class Window extends JFrame {
         int proverka = 0, counterBalls = 0, chek = 0, notEmpty = 0;
         int[] massive = new int[numberBalls];
         Random random = new Random();
-        for (int y = 0; y < panelAmount * panelAmount; ++y) {
-            if (nullCell.get(y) != -1) {
-                notEmpty++;
-            }
-        }
-        if (notEmpty < 4) {
-            setFinalLabel();
-        }
         gamePanel.removeAll();
         //restartButton.addActionListener(new Window.ButtonMouseListener(-2));
         //exitButton .addActionListener(new Window.ButtonMouseListener(-3));
@@ -418,6 +411,14 @@ public class Window extends JFrame {
                         massiveImage[i * panelAmount + j] = paths[(j + i * panelAmount) % pathCount];
                     }
                     if (proverka == 1 && numberBalls == 3) {
+                        for (int y = 0; y < panelAmount * panelAmount; ++y) {
+                            if (nullCell.get(y) != -1) {
+                                notEmpty++;
+                            }
+                        }
+                        if (notEmpty <= 3) {
+                            setFinalLabel();
+                        }
                         newLabel.setIcon(choiceColor(paths[counterBalls]));
                         massiveImage[i * panelAmount + j] = paths[counterBalls];
                         counterBalls++;
