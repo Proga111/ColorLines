@@ -32,7 +32,7 @@ public class Window extends JFrame {
     private JLabel numberLabel;
     private JPanel finalPanel;
     private JLabel FinalLabel;
-    private final int panelAmount = 5;
+    private final int panelAmount = 9;
     private final int panelSize = 50;
 
     private final int pathCount = 7;
@@ -186,10 +186,14 @@ public class Window extends JFrame {
 
                     nullCell.set(position, -1);
                     nullCell.set(selectCell, selectCell);
-                    checkingTheLine(position);
+                    if(!checkingTheLine(position))
+                    {
+                        startPanels(3);
+                    }
+
                     scoreWindow = Integer.toString(score);
                     numberLabel.setText(scoreWindow);
-                    startPanels(3);
+
                     selectCell = -1;
                     checkImage = 1;
                     for (int l = 0; l < panelAmount * panelAmount; ++l) {
@@ -207,7 +211,7 @@ public class Window extends JFrame {
                 selectCell = -1;
             } else if (checkImage == 0) {
                 selectCell = position;
-                System.out.println("Выбрали");
+
                 //BorderFactory.createLineBorder(Color.RED, 100);
             }
             System.out.println(selectCell);
@@ -217,8 +221,9 @@ public class Window extends JFrame {
     }
 
 
-    public void checkingTheLine(int position) {
-        System.out.println("ChekingLine" + position);
+    public boolean checkingTheLine(int position) {
+        int flag = 0;
+
         deleteBall.add(position);
         int coastRoad12 = 0, coastRoad34 = 0, coastRoad56 = 0, coastRoad78 = 0, positionBalls, bestCoast = 0, positionStart = 0, chekroad = 0;
         positionStart = position;
@@ -227,7 +232,7 @@ public class Window extends JFrame {
                 coastRoad12++;
                 deleteBall.add(position - panelAmount);
                 position = position - panelAmount;
-                System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^");
+
             } else break;
         }
         position = positionStart;
@@ -236,7 +241,7 @@ public class Window extends JFrame {
                 coastRoad12++;
                 deleteBall.add(position + panelAmount);
                 position = position + panelAmount;
-                System.out.println("+++++++++++++++++++++++++");
+
             } else break;
         }
         if (coastRoad12 >= 4) {
@@ -247,7 +252,7 @@ public class Window extends JFrame {
                 nullCell.set(deleteBall.get(i), deleteBall.get(i));
                 // deleteBall.remove(i);
             }
-            System.out.println("SCORE12 = " + bestCoast);
+
         }
         deleteBall.clear();
         deleteBall.trimToSize();
@@ -257,19 +262,20 @@ public class Window extends JFrame {
                 coastRoad34++;
                 deleteBall.add(position + 1);
                 position = position + 1;
-                System.out.println(">>>>>>>>>>>>>>>>>>>>>");
+
+
             } else break;
         }
         position = positionStart;
         while (position % panelAmount != 0) {
             if (massiveImage[position - 1] == (massiveImage[position])) System.out.println("1))");
-            System.out.println("POSITION = " + massiveImage[position]);
+
             if (massiveImage[position - 1] != ColorName.EMPTY) System.out.println("2))");
             if (massiveImage[position - 1] == (massiveImage[position]) && massiveImage[position - 1] != ColorName.EMPTY) {
                 coastRoad34++;
                 deleteBall.add(position - 1);
                 position = position - 1;
-                System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+
             } else break;
         }
         if (coastRoad34 >= 4) {
@@ -277,7 +283,7 @@ public class Window extends JFrame {
             bestCoast += 10 + (coastRoad34 - 4) * 3;
             for (int i = 0; i < deleteBall.size(); ++i) {
                 massiveImage[deleteBall.get(i)] = ColorName.EMPTY;
-                System.out.println("delete = " + deleteBall.get(i));
+
                 nullCell.set(deleteBall.get(i), deleteBall.get(i));
             }
         }
@@ -289,7 +295,7 @@ public class Window extends JFrame {
                 coastRoad56++;
                 deleteBall.add(position + 1 - panelAmount);
                 position = position + 1 - panelAmount;
-                System.out.println(">>>>>>>>>>>>^^^^^^^^^");
+
             } else break;
         }
         position = positionStart;
@@ -298,7 +304,7 @@ public class Window extends JFrame {
                 coastRoad56++;
                 deleteBall.add(position + panelAmount - 1);
                 position = position + panelAmount - 1;
-                System.out.println("+++++++++++++++<<<<<<<<<<<<<<<<<<");
+
             } else break;
         }
         if (coastRoad56 >= 4) {
@@ -306,8 +312,9 @@ public class Window extends JFrame {
             bestCoast += 10 + (coastRoad56 - 4) * 3;
             for (int i = 0; i < deleteBall.size(); ++i) {
                 massiveImage[deleteBall.get(i)] = ColorName.EMPTY;
-                System.out.println("delete = " + deleteBall.get(i));
+
                 nullCell.set(deleteBall.get(i), deleteBall.get(i));
+                flag++;
 
             }
         }
@@ -319,7 +326,7 @@ public class Window extends JFrame {
                 coastRoad78++;
                 deleteBall.add(position - panelAmount - 1);
                 position = position - panelAmount - 1;
-                System.out.println("^^^^^^^^^<<<<<<<<<<<<<");
+
             } else break;
         }
         position = positionStart;
@@ -328,7 +335,7 @@ public class Window extends JFrame {
                 coastRoad78++;
                 deleteBall.add(position + panelAmount + 1);
                 position = position + panelAmount + 1;
-                System.out.println(">>>>>>>>>>>>>+++++++++");
+
             } else break;
         }
         if (coastRoad78 >= 4) {
@@ -336,8 +343,8 @@ public class Window extends JFrame {
             bestCoast += 10 * 2 + (coastRoad78 - 4) * 3;
             for (int i = 0; i < deleteBall.size(); ++i) {
                 massiveImage[deleteBall.get(i)] = ColorName.EMPTY;
-                System.out.println("delete = " + deleteBall.get(i));
                 nullCell.set(deleteBall.get(i), deleteBall.get(i));
+                flag++;
             }
         }
         deleteBall.clear();
@@ -347,8 +354,10 @@ public class Window extends JFrame {
             massiveImage[positionStart] = ColorName.EMPTY;
             nullCell.set(positionStart, positionStart);
             score += bestCoast;
-            System.out.println("SCORE = " + bestCoast);
+
+            return true;
         }
+        return false;
     }
 
     public void setFinalLabel() {
@@ -384,7 +393,7 @@ public class Window extends JFrame {
             }
             nullCell.set(massive[i], -1);
 
-            System.out.println("posotion  = " + massive[i]);
+
         }
 
 
@@ -428,7 +437,11 @@ public class Window extends JFrame {
                 gamePanel.add(newPanel);
             }
         }
-        addBallsPaths();
+        if(numberBalls != 0)
+        {
+            addBallsPaths();
+        }
+
         counterBalls = 0;
         ball1.setIcon(CellState(choiceColor(paths[0])));
         ball2.setIcon(CellState(choiceColor(paths[1])));
